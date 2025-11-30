@@ -43,4 +43,8 @@ def galaxia():
     return render_template('galaxia.html', frases=FRASES)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # En producción, Gunicorn manejará esto
+    # En desarrollo local, usa debug=True
+    import os
+    debug_mode = os.getenv('FLASK_ENV') == 'development'
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)
