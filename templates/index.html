@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Órbitas del Amor para Monserrat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Galaxia</h1>
+            <h2>para Monserrat</h2>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <form id="fraseForm">
+                    <input type="text" id="fraseInput" placeholder="Escribe una frase para el universo..." required autocomplete="off">
+                    <button type="submit">Enviar al Espacio</button>
+                </form>
+            </section>
+
+            <section class="actions">
+                <a href="/galaxia" class="btn-galaxy">Ver Galaxia</a>
+            </section>
+
+            <section class="list-section">
+                <h3>Frases en Órbita</h3>
+                <ul id="frasesList">
+                    {% for frase in frases %}
+                    <li>
+                        <span class="text">{{ frase.text }}</span>
+                        <span class="date">{{ frase.date }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('fraseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('fraseInput');
+            const text = input.value;
+
+            if (!text) return;
+
+            const response = await fetch('/api/frases', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ frase: text })
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
